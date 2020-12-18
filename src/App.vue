@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <AppHeader />
+    <appHeader v-if="header"  />
     <div id="content">
-      
-      
-    <router-view/>
+    <router-view v-on:showHeader="showHeader($event)" v-on:hideHeader="hideHeader($event)" />
     </div>
   </div>
 </template>
@@ -15,15 +13,22 @@ import Header from './components/Header.vue';
 
 export default {
   components: {
-    'AppHeader': Header
+    'appHeader': Header
   },
   data() {
     return {
-     
+     header: false
     }
     
   },
-  
+  methods: {
+    showHeader: function() {
+      this.header=true;
+    },
+    hideHeader: function() {
+      this.header=false;
+    }
+  }
 };
 </script>
 

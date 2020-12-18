@@ -7,7 +7,9 @@
 <script>
 export default {
   name: 'Films',
-  
+  created: function() {
+    this.$emit('showHeader')
+  }
 }
 </script>
 

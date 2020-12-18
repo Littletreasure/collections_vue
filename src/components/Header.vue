@@ -1,9 +1,12 @@
 <template>
 <header>
-  <h1>Ruth's Collection App</h1>
-  <router-link to="/">Home</router-link>
-  <router-link to="/books">Books</router-link>
-  <router-link to="/films">Films</router-link>
+  <nav>
+  <ul>
+  <li><router-link to="/">Home</router-link></li>
+  <li><router-link to="/books">Books</router-link></li>
+  <li><router-link to="/films">Films</router-link></li>
+  </ul>
+  </nav>
 </header>
 </template>
 
@@ -15,5 +18,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+ul{
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+}
+li{
+    display: inline-block;
+    margin: 0 10px;
+}
+a{
+    color: black;
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 10px;
+}
 </style>
