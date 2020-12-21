@@ -5,6 +5,7 @@
     <p v-on:click="type='Got'">Got</p>
     <p v-on:click="type='Wanted'">Wanted</p>
   </nav>
+  <div class="tableDiv">
   <table>
     <thead>
       <tr>
@@ -19,6 +20,7 @@
     </tr>
   </tbody>
   </table>
+  </div>
 </main>
 </template>
 
@@ -55,5 +57,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+main {
+  background: rgb(247, 142, 142);
+  min-height: 100vh;
+  h2 {
+    margin: 0;
+  }
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  } 
+  .tableDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  table {
+    justify-content: center;
+    border-spacing: 0;
+    border-collapse: collapse;
+    
+    th, td {
+      text-align: left;
+      border: 1px solid black;
+      padding: 5px 20px 5px 5px;
+    }
+  }
+}
 
 </style>

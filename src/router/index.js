@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
-import Books from '../components/Books.vue'
-import Films from '../components/Films.vue'
+import Collection from '../components/Collection.vue'
 
 Vue.use(VueRouter)
 
@@ -15,12 +14,14 @@ const routes = [
   {
     path: '/books',
     name: 'Books',
-    component: Books
+    component: Collection,
+    props: {collection: 'books'}
   },
   {
     path: '/films',
     name: 'Films',
-    component: Films
+    component: Collection,
+    props: {collection: 'films'}
   }
 ]
 

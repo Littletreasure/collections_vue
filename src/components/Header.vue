@@ -18,19 +18,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul{
+header {
+  background: gray;
+  width: 100%;
+  padding: 10px 0;
+  ul{
     list-style-type: none;
     text-align: center;
     margin: 0;
-}
-li{
+  }
+  li{
     display: inline-block;
     margin: 0 10px;
-}
-a{
+  }
+  a{
     color: black;
     text-decoration: none;
     padding: 6px 8px;
     border-radius: 10px;
+  }
 }
+
 </style>

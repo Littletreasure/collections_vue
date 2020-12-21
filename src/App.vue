@@ -2,7 +2,7 @@
   <div id="app">
     <appHeader v-if="header"  />
     <div id="content">
-    <router-view v-on:showHeader="showHeader($event)" v-on:hideHeader="hideHeader($event)" />
+    <router-view  v-on:showHeader="showHeader($event)" v-on:hideHeader="hideHeader($event)" />
     </div>
   </div>
 </template>
@@ -21,6 +21,7 @@ export default {
     }
     
   },
+  
   methods: {
     showHeader: function() {
       this.header=true;
@@ -40,6 +41,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
+ #content {
+   min-height: 100%;
+ }
 }
 
 
