@@ -26,17 +26,21 @@ header {
     list-style-type: none;
     text-align: center;
     margin: 0;
+    padding: 0;
   }
   li{
     display: inline-block;
     margin: 0 10px;
   }
   a{
-    color: black;
+    color: white;
     text-decoration: none;
     padding: 6px 8px;
     border-radius: 10px;
   }
+  a:hover {
+      color: black;
+    }
 }
 
 </style>

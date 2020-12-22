@@ -1,7 +1,6 @@
 <template>
 <main>
-  <h2>{{collection.toUpperCase()}}</h2>
-  <p>{{filter}}</p>
+  <h2>{{collection.toUpperCase()}} {{filter.toUpperCase()}}</h2>
   <nav>
     <button v-on:click="changeType('Got')">Got</button>
     <button v-on:click="changeType('Wanted')">Wanted</button>
@@ -19,12 +18,14 @@
     <tr  v-for="item in items" v-bind:key="item.book_id">
       <td>{{item.title}}</td>
       <td>{{item.author}}</td>
+      <td v-on:click="delItem(item.book_id)" style="border: none; color: red">x</td>
     </tr>
   </tbody>
   <tbody v-else>
     <tr  v-for="item in items" v-bind:key="item.film_id">
       <td>{{item.title}}</td>
       <td>{{item.format}}</td>
+      <td v-on:click="delItem(item.film_id)" style="border: none; color: red">x</td>
     </tr>
   </tbody>
   </table>
@@ -36,15 +37,17 @@
 </template>
 
 <script>
+import {mixin} from '../utils/mixin'
+
 export default {
+  mixins: [mixin],
   name: 'Collection',
   data() {
     return {
      filter: "Got",
      collType: 'books',
      items: [],
-     loaded: true,
-     update: false
+     loaded: false
     }
   },
   props: ['collection'],
@@ -54,40 +57,53 @@ export default {
     
   },
   mounted: function() {
-    console.log('mounted');
     this.collType=this.collection;
-    this.axios.get('https://ruths-collection-app.herokuapp.com/api/' + this.collection 
-    + this.filter)
+    this.getItems(this.collection, this.filter)
     .then(res => {
-      console.log(res.data)
-      // this.loaded=true
-      this.items = res.data[this.collection];
+      this.loaded=true;
+      this.items= res[this.collection];
     })
   },
-  updated: function() {
-    if (this.update || this.collType != this.collection) {
-    console.log('updated');
+  updated() {
     if (this.collType != this.collection) {
-      this.filter = 'Got'
-    };
-    this.collType=this.collection;
-    // this.loaded=false;
-    this.axios.get('https://ruths-collection-app.herokuapp.com/api/' + this.collection 
-    + this.filter)
-    .then(res => {
-      console.log(res.data)
-      // this.loaded=true;
-      this.update=false;
-      this.items = res.data[this.collection];
-    })
-  }
+      this.collType=this.collection;
+      this.filter= 'Got';
+      this.loaded=false;
+      this.getItems(this.collection, this.filter)
+      .then(res => {
+        this.loaded=true;
+        this.items= res[this.collection];
+      })
+      .catch(err => console.log(err))
+    }
   },
   methods: {
     changeType: function(str) {
+      this.loaded=false;
       this.filter=str;
-      this.update=true;
+      this.getItems(this.collection, this.filter)
+      .then(res => {
+        this.loaded=true;
+        this.items= res[this.collection];
+      })
+      .catch(err => console.log(err))
+    },
+    delItem: function(id) {
+      this.loaded=false;
+      this.deleteItem(this.collection, this.filter, id)
+      .then(res => {
+        this.getItems(this.collection, this.filter)
+        .then(res => {
+          this.loaded=true;
+          this.items = res[this.collection]
+        })
+      })
+      .catch(err => console.log(err))
+        
     }
-  }
+  },
+   
+  
 }
 </script>
 
