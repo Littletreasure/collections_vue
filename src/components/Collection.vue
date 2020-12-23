@@ -9,23 +9,23 @@
   <table>
     <thead>
       <tr>
-        <th>Title</th>
-        <th v-if="collType == 'books'">Author</th>
-        <th v-else>Format</th>
+        <th>Title<button v-on:click="itemSort('title')">sort</button></th>
+        <th v-if="collType == 'books'">Author<button v-on:click="itemSort('author')">sort</button></th>
+        <th v-else>Format<button v-on:click="itemSort('format')">sort</button></th>
       </tr>
     </thead>
   <tbody v-if="collType == 'books'">
     <tr  v-for="item in items" v-bind:key="item.book_id">
       <td>{{item.title}}</td>
       <td>{{item.author}}</td>
-      <td id="close" v-on:click="delItem(item.book_id)" >x</td>
+      <td class="del" v-on:click="delItem(item.book_id)" >x</td>
     </tr>
   </tbody>
   <tbody v-else>
     <tr  v-for="item in items" v-bind:key="item.film_id">
       <td>{{item.title}}</td>
       <td>{{item.format}}</td>
-      <td id="close" v-on:click="delItem(item.film_id)" >x</td>
+      <td class="del" v-on:click="delItem(item.film_id)" >x</td>
     </tr>
   </tbody>
   </table>
@@ -35,7 +35,7 @@
     <p class="loading">Loading ...</p>
   </div>
   <div class="addForm">
-    <button v-on:click="showAdd" v-if="!addForm">Add {{collType.slice(0, -1)}}</button>
+    <button v-on:click="addForm='true'" v-if="!addForm">Add {{collType.slice(0, -1)}}</button>
     <addItem v-else v-bind:collType="collType" v-bind:filter="filter" v-on:close="addForm=false" v-on:onAdd="addItem" />
   </div>
 </main>
@@ -57,7 +57,10 @@ export default {
      collType: 'books',
      items: [],
      loaded: false,
-     addForm: false
+     addForm: false,
+     sortBy: '',
+     asc: true
+     
     }
   },
   props: ['collection'],
@@ -112,9 +115,6 @@ export default {
       .catch(err => console.log(err))
         
     },
-    showAdd: function() {
-      this.addForm=true;
-    },
     addItem: function(title, string) {
       this.loaded=false;
       this.addForm=false;
@@ -124,10 +124,23 @@ export default {
         this.items.push(res)
       })
       .catch(err => console.log(err))
+    },
+    itemSort: function(input) {
+      if (this.sortBy != input) {
+        this.sortBy = input;
+        this.asc = true;
+      } else {
+        this.asc = !this.asc;
+      }
+      const itemArray = [...this.items];
+      if (this.asc) {
+        itemArray.sort((a,b) => a[input].localeCompare(b[input]));
+      } else {
+        itemArray.sort((a,b) => b[input].localeCompare(a[input]))
+      }
+      this.items = itemArray;
     }
   },
-   
-  
 }
 </script>
 
@@ -160,8 +173,11 @@ main {
     border-spacing: 0;
     border-collapse: collapse;
     margin-bottom: 30px;
-
-    #close {
+    button {
+      margin: 0 0 0 10px;
+      padding: 0 3px;
+    }
+    .del {
       border: none;
       color: red;
       cursor: pointer;
@@ -171,6 +187,10 @@ main {
       border: 1px solid black;
       padding: 5px 20px 5px 5px;
     }
+    // th {
+    //   display: flex;
+    //   flex-direction: row;
+    // }
   }
   .addForm {
     display: flex;
